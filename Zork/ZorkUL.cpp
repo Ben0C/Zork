@@ -10,11 +10,12 @@ int main(int argc, char** argv) {
 }
 
 ZorkUL::ZorkUL() {
-	createRooms();
+    createRooms();
 }
 
 void ZorkUL::createRooms()  {
     Room *a, *b, *c, *d, *e, *f, *g, *h, *i, *j;
+
 
 	a = new Room("a");
         a->addItem(new Item("x", 1, 11));
@@ -31,6 +32,10 @@ void ZorkUL::createRooms()  {
 	i = new Room("i");
     j = new Room("j");
 
+
+
+
+
 //             (N, E, S, W)
 	a->setExits(f, b, d, c);
 	b->setExits(NULL, NULL, NULL, a);
@@ -44,6 +49,8 @@ void ZorkUL::createRooms()  {
     j->setExits(NULL, i, NULL, NULL);
 
         currentRoom = a;
+
+        rooms = {*a, *b, *c, *d, *e, *f, *g, *h, *i, *j};
 }
 
 /**
@@ -104,6 +111,14 @@ bool ZorkUL::processCommand(Command command) {
 
 	else if (commandWord.compare("go") == 0)
 		goRoom(command);
+
+    else if (commandWord.compare("teleport") == 0){
+        Room room = randomRoom();
+        currentRoom = &room;
+        cout << currentRoom->longDescription() << endl;
+    }
+
+
 
     else if (commandWord.compare("take") == 0)
     {
@@ -174,6 +189,11 @@ void ZorkUL::goRoom(Command command) {
 	}
 }
 
+Room ZorkUL::randomRoom() {
+    int choice = rand() % 10;
+    return rooms[choice];
+}
+
 string ZorkUL::go(string direction) {
 	//Make the direction lowercase
 	//transform(direction.begin(), direction.end(), direction.begin(),:: tolower);
@@ -187,3 +207,5 @@ string ZorkUL::go(string direction) {
 		return currentRoom->longDescription();
 	}
 }
+
+
